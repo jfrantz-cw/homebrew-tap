@@ -37,12 +37,14 @@ jobs:
           fi
           echo "tag=$tag" >>"$GITHUB_OUTPUT"
 
-      - name: Check out the generator at that tag
+      # Deliberately the default branch, not the release tag: the generator is a
+      # tool, and pinning it to the tag it renders would mean any release older
+      # than the tool (v1.0.0 is) has no generator to run.
+      - name: Check out the generator
         if: steps.rel.outputs.skip != 'true'
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           repository: jfrantz-cw/overmind
-          ref: ${{ steps.rel.outputs.tag }}
           path: .source
           persist-credentials: false
 
